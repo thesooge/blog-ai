@@ -1,0 +1,155 @@
+/* General Styles */
+body {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Card Styles */
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Blog Post Styles */
+.blog-post {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.blog-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* Form Styles */
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+textarea.form-control {
+    min-height: 200px;
+}
+
+/* Custom Button Styles */
+.btn {
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+}
+
+.btn-group .btn {
+    border-radius: 5px;
+    margin: 0 2px;
+}
+
+/* Navigation */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+/* Authentication Forms */
+.auth-form .card {
+    border: none;
+    border-radius: 10px;
+}
+
+.auth-form .card-body {
+    padding: 2rem;
+}
+
+.auth-form .form-control {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.auth-form .input-group-text {
+    background-color: #f8f9fa;
+    border-right: none;
+}
+
+.auth-form .form-control {
+    border-left: none;
+}
+
+.auth-form .form-control:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+.auth-form .input-group:focus-within {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-radius: 5px;
+}
+
+/* Profile Page */
+.profile-header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 4rem;
+    color: #007bff;
+}
+
+.profile-stats {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .blog-post h1 {
+        font-size: 2rem;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .btn-group .btn {
+        margin: 2px 0;
+    }
+    
+    .auth-form .card-body {
+        padding: 1.5rem;
+    }
+    
+    .profile-header {
+        padding: 2rem 0;
+    }
+    
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 3rem;
+    }
+} 

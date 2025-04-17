@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog Posts{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-4">Blog Posts</h1>
+    </div>
+    {% if user.is_authenticated %}
+    <div class="col text-end">
+        <a href="{% url 'post_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> New Post
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for post in posts %}
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text text-muted">
+                    <small>
+                        <i class="far fa-calendar"></i> {{ post.pub_date|date:"F j, Y" }}
+                        <span class="ms-2">
+                            <i class="far fa-user"></i> {{ post.author.username }}
+                        </span>
+                    </small>
+                </p>
+                <p class="card-text">{{ post.body|truncatewords:30 }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{{ post.get_absolute_url }}" class="btn btn-outline-primary">Read More</a>
+                    {% if user.is_authenticated and post.author == user %}
+                    <div class="btn-group">
+                        <a href="{% url 'post_update' post.slug %}" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ post.id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if user.is_authenticated and post.author == user %}
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal{{ post.id }}" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete "{{ post.title }}"?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form action="{% url 'post_delete' post.slug %}" method="POST" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            No posts available. {% if user.is_authenticated %}<a href="{% url 'post_create' %}">Create your first post!</a>{% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} 

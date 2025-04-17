@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<article class="blog-post">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-4">{{ post.title }}</h1>
+        {% if user.is_authenticated and post.author == user %}
+        <div class="btn-group">
+            <a href="{% url 'post_update' post.slug %}" class="btn btn-outline-primary">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="meta text-muted mb-4">
+        <i class="far fa-calendar"></i> Published on {{ post.pub_date|date:"F j, Y" }}
+        <span class="ms-3">
+            <i class="far fa-user"></i> By {{ post.author.username }}
+        </span>
+    </div>
+
+    <div class="blog-content">
+        {{ post.body|linebreaks }}
+    </div>
+
+    <div class="mt-5">
+        <a href="{% url 'post_list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Posts
+        </a>
+    </div>
+</article>
+
+{% if user.is_authenticated and post.author == user %}
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete "{{ post.title }}"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{% url 'post_delete' post.slug %}" method="POST" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %} 

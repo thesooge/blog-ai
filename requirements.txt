@@ -1,0 +1,9 @@
+Django==4.2.7
+python-dotenv==1.0.0
+django-crispy-forms==2.1
+crispy-bootstrap5==0.7
+Pillow==10.1.0  # For image handling
+django-ckeditor==6.7.0  # For rich text editor
+whitenoise==6.6.0  # For serving static files
+gunicorn==21.2.0  # For production deployment
+django-cleanup==8.1.0  # For automatically cleaning up files 
