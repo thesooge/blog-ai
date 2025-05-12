@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
@@ -59,4 +60,41 @@
     </div>
 </div>
 {% endif %}
-{% endblock %} 
+
+<!-- Comments Section -->
+<section class="mt-5">
+    <h3 class="mb-4">Comments ({{ comments.count }})</h3>
+    {% if comments %}
+        <div class="list-group mb-4">
+            {% for comment in comments %}
+            <div class="list-group-item">
+                <p class="mb-1">{{ comment.body|linebreaks }}</p>
+                <small class="text-muted">by {{ comment.author.username }} on {{ comment.created|date:"F j, Y, g:i a" }}</small>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No comments yet. Be the first to comment!</p>
+    {% endif %}
+</section>
+
+<!-- Comment Form -->
+{% if user.is_authenticated %}
+<div class="card mt-4">
+    <div class="card-body">
+        <h5 class="card-title">Leave a Comment</h5>
+        <form method="post" action="{% url 'product-comment' post.pk %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ comment_form.body|as_crispy_field }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Comment</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info mt-4">
+    <a href="{% url 'login' %}">Log in</a> to leave a comment.
+</div>
+{% endif %}
+{% endblock %}
