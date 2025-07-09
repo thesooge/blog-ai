@@ -19,12 +19,35 @@
         {% endif %}
     </div>
 
-    <div class="meta text-muted mb-4">
+    <div class="meta text-muted mb-3">
         <i class="far fa-calendar"></i> Published on {{ post.pub_date|date:"F j, Y" }}
         <span class="ms-3">
             <i class="far fa-user"></i> By {{ post.author.username }}
         </span>
+        <span class="ms-3">
+            <i class="fas fa-heart text-danger"></i> {{ post.total_likes }} like{{ post.total_likes|pluralize }}
+        </span>
     </div>
+
+    <!-- Like Button -->
+    {% if user.is_authenticated %}
+        <form action="{% url 'post_like' post.slug %}" method="post" class="mb-4">
+            {% csrf_token %}
+            {% if user in post.likes.all %}
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-heart"></i> Unlike
+                </button>
+            {% else %}
+                <button type="submit" class="btn btn-outline-danger">
+                    <i class="far fa-heart"></i> Like
+                </button>
+            {% endif %}
+        </form>
+    {% else %}
+        <div class="alert alert-warning mb-4">
+            <a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to like this post.
+        </div>
+    {% endif %}
 
     <div class="blog-content">
         {{ post.body|linebreaks }}

@@ -1,8 +1,9 @@
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .models import Post , Comment
 from .forms import CommentForm
@@ -76,10 +77,17 @@ class PostComments(generic.CreateView):
     
     
     
-    
-    
-    
-    
+@login_required
+def toggle_like(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    user = request.user
+
+    if user in post.likes.all():
+        post.likes.remove(user)
+    else:
+        post.likes.add(user)
+
+    return redirect(post.get_absolute_url())    
     
     
     
