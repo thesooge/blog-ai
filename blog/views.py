@@ -3,6 +3,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
 from .models import Post , Comment
@@ -15,6 +16,20 @@ class PostListView(generic.ListView):
     context_object_name = 'posts'
     paginate_by = 3
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(body__icontains=query)
+            )
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '')
+        return context
 
 class PostDetailView(generic.DetailView):
     model = Post
